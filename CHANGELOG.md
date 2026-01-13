@@ -1,35 +1,37 @@
 # Changelog
 
-Todos los cambios notables de este proyecto se documentan aquí.
+All notable changes to this project are documented here.
 
 ## [v1.0.0] - 2026-01-13
 
-### 🎉 Release Inicial
+### 🎉 Initial Release
 
-#### Características
+#### Features
 
-- ✨ Interfaz gráfica moderna con tema oscuro (PyQt6)
-- 🤖 Detección de 11 servicios AI de Windows 11:
+- ✨ Modern dark-themed GUI (PyQt6)
+- 🤖 Detection of 11 Windows 11 AI services:
   - Microsoft Copilot
   - Windows Recall
   - AI Explorer
-  - Bing Search en Start Menu
-  - Web Search en Taskbar
+  - Bing Search in Start Menu
+  - Web Search in Taskbar
   - Windows Widgets (AI News)
   - Cortana (Legacy)
   - Edge Copilot Sidebar
   - AI Voice Typing
   - Suggested Actions
-- ⚡ Habilitar/Deshabilitar servicios individualmente
-- 🚫 Botón para deshabilitar todos los servicios
-- 💾 Sistema de backup antes de modificar
-- ↩️ Restauración desde backups
-- 📋 Log de actividad con historial persistente
-- 🛡️ Solicitud automática de permisos de administrador
+- ⚡ Enable/Disable services individually
+- 🚫 One-click disable all services
+- 💾 Backup system before modifications
+- ↩️ Restore from backups
+- 📋 Persistent activity log
+- 🛡️ Automatic administrator privilege request
+- 🌍 Multi-language support (English, German, Spanish)
 
-#### Técnico
+#### Technical
 
-- Ejecutable standalone (.exe) - No requiere Python instalado
-- Modificación de Registry para desactivar servicios
-- Remoción de paquetes Appx cuando aplica
-- Icono personalizado de la aplicación
+- Standalone executable (.exe) - No Python required
+- Registry modification to disable services
+- Appx package removal when applicable
+- Custom application icon
+- GitHub Actions automated builds

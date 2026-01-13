@@ -1,5 +1,5 @@
 """
-Widget para mostrar el log de actividad
+Widget to display activity log
 """
 
 from PyQt6.QtWidgets import (
@@ -10,10 +10,11 @@ from PyQt6.QtCore import Qt
 import sys
 sys.path.append('..')
 from core.logger import activity_logger, LogEntry
+from core.i18n import t
 
 
 class LogEntryWidget(QFrame):
-    """Widget para mostrar una entrada individual del log"""
+    """Widget to display individual log entry"""
     
     def __init__(self, entry: LogEntry, parent=None):
         super().__init__(parent)
@@ -24,7 +25,7 @@ class LogEntryWidget(QFrame):
         layout.setContentsMargins(10, 5, 10, 5)
         layout.setSpacing(10)
         
-        # Ícono según nivel
+        # Icon based on level
         icon_map = {
             "success": "✅",
             "error": "❌",
@@ -43,7 +44,7 @@ class LogEntryWidget(QFrame):
         time_label.setFixedWidth(70)
         layout.addWidget(time_label)
         
-        # Acción
+        # Action
         action_colors = {
             "DISABLE": "#e94560",
             "ENABLE": "#4ade80",
@@ -56,13 +57,13 @@ class LogEntryWidget(QFrame):
         action_label.setFixedWidth(80)
         layout.addWidget(action_label)
         
-        # Servicio
+        # Service
         service_label = QLabel(entry.service_name)
         service_label.setStyleSheet("color: #aaa; font-size: 12px;")
         service_label.setFixedWidth(150)
         layout.addWidget(service_label)
         
-        # Mensaje
+        # Message
         message_label = QLabel(entry.message)
         message_label.setStyleSheet("color: #eaeaea; font-size: 12px;")
         message_label.setWordWrap(True)
@@ -78,7 +79,7 @@ class LogEntryWidget(QFrame):
 
 
 class LogViewerWidget(QWidget):
-    """Panel de visualización del log de actividad"""
+    """Activity log viewer panel"""
     
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -93,9 +94,9 @@ class LogViewerWidget(QWidget):
         # Header
         header = QHBoxLayout()
         
-        title = QLabel("📋 Log de Actividad")
-        title.setStyleSheet("font-size: 16px; font-weight: bold; color: #00d4ff;")
-        header.addWidget(title)
+        self.title_label = QLabel(t("activity_log"))
+        self.title_label.setStyleSheet("font-size: 16px; font-weight: bold; color: #00d4ff;")
+        header.addWidget(self.title_label)
         
         header.addStretch()
         
@@ -116,7 +117,7 @@ class LogViewerWidget(QWidget):
         
         layout.addLayout(header)
         
-        # Scroll area para las entradas
+        # Scroll area for entries
         scroll_area = QScrollArea()
         scroll_area.setWidgetResizable(True)
         scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
@@ -137,19 +138,23 @@ class LogViewerWidget(QWidget):
         scroll_area.setWidget(self.entries_container)
         layout.addWidget(scroll_area)
     
+    def update_translations(self):
+        """Update texts when language changes"""
+        self.title_label.setText(t("activity_log"))
+    
     def refresh(self):
-        """Actualiza las entradas del log"""
-        # Limpiar entradas anteriores
+        """Refresh log entries"""
+        # Clear previous entries
         while self.entries_layout.count() > 1:
             item = self.entries_layout.takeAt(0)
             if item.widget():
                 item.widget().deleteLater()
         
-        # Obtener entradas
+        # Get entries
         entries = activity_logger.get_entries(limit=50)
         
         if not entries:
-            empty_label = QLabel("Sin actividad registrada")
+            empty_label = QLabel(t("no_activity"))
             empty_label.setStyleSheet("color: #666; font-style: italic; padding: 20px;")
             empty_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
             self.entries_layout.insertWidget(0, empty_label)

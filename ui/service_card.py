@@ -1,5 +1,5 @@
 """
-Widget para mostrar un servicio AI individual
+Widget to display an individual AI service
 """
 
 from PyQt6.QtWidgets import (
@@ -10,10 +10,11 @@ from PyQt6.QtCore import pyqtSignal, Qt
 import sys
 sys.path.append('..')
 from core.ai_services import AIService, ServiceStatus
+from core.i18n import t
 
 
 class ServiceCard(QFrame):
-    """Widget card para mostrar información de un servicio AI"""
+    """Card widget to display AI service information"""
     
     disable_clicked = pyqtSignal(str)  # service_id
     enable_clicked = pyqtSignal(str)   # service_id
@@ -26,42 +27,42 @@ class ServiceCard(QFrame):
         self.update_status(service.status)
     
     def _setup_ui(self):
-        """Configura la interfaz del card"""
+        """Configure card interface"""
         layout = QVBoxLayout(self)
         layout.setSpacing(10)
         
-        # Header con nombre y estado
+        # Header with name and status
         header_layout = QHBoxLayout()
         
-        # Nombre del servicio
+        # Service name
         self.name_label = QLabel(self.service.name)
         self.name_label.setObjectName("serviceName")
         header_layout.addWidget(self.name_label)
         
         header_layout.addStretch()
         
-        # Estado
-        self.status_label = QLabel("Detectando...")
+        # Status
+        self.status_label = QLabel(t("detecting_services"))
         header_layout.addWidget(self.status_label)
         
         layout.addLayout(header_layout)
         
-        # Descripción
+        # Description
         desc_label = QLabel(self.service.description)
         desc_label.setObjectName("serviceDescription")
         desc_label.setWordWrap(True)
         layout.addWidget(desc_label)
         
-        # Botones de acción
+        # Action buttons
         button_layout = QHBoxLayout()
         button_layout.addStretch()
         
-        self.enable_btn = QPushButton("Habilitar")
+        self.enable_btn = QPushButton(t("enable"))
         self.enable_btn.setObjectName("success")
         self.enable_btn.clicked.connect(self._on_enable_clicked)
         button_layout.addWidget(self.enable_btn)
         
-        self.disable_btn = QPushButton("Deshabilitar")
+        self.disable_btn = QPushButton(t("disable"))
         self.disable_btn.setObjectName("danger")
         self.disable_btn.clicked.connect(self._on_disable_clicked)
         button_layout.addWidget(self.disable_btn)
@@ -72,38 +73,45 @@ class ServiceCard(QFrame):
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
     
     def update_status(self, status: ServiceStatus):
-        """Actualiza la visualización del estado"""
+        """Update status visualization"""
         self.service.status = status
         
         if status == ServiceStatus.ENABLED:
-            self.status_label.setText("● Activo")
+            self.status_label.setText(t("status_enabled"))
             self.status_label.setObjectName("statusEnabled")
             self.disable_btn.setEnabled(True)
             self.enable_btn.setEnabled(False)
         elif status == ServiceStatus.DISABLED:
-            self.status_label.setText("○ Deshabilitado")
+            self.status_label.setText(t("status_disabled"))
             self.status_label.setObjectName("statusDisabled")
             self.disable_btn.setEnabled(False)
             self.enable_btn.setEnabled(True)
         elif status == ServiceStatus.NOT_INSTALLED:
-            self.status_label.setText("✗ No instalado")
+            self.status_label.setText(t("status_not_installed"))
             self.status_label.setObjectName("statusNotInstalled")
             self.disable_btn.setEnabled(False)
             self.enable_btn.setEnabled(False)
         else:
-            self.status_label.setText("? Desconocido")
+            self.status_label.setText(t("status_unknown"))
             self.status_label.setObjectName("statusDisabled")
             self.disable_btn.setEnabled(True)
             self.enable_btn.setEnabled(True)
         
-        # Forzar actualización de estilos
+        # Force style update
         self.status_label.style().unpolish(self.status_label)
         self.status_label.style().polish(self.status_label)
     
+    def update_translations(self):
+        """Update button texts when language changes"""
+        self.enable_btn.setText(t("enable"))
+        self.disable_btn.setText(t("disable"))
+        # Re-apply status to update status text
+        self.update_status(self.service.status)
+    
     def _on_disable_clicked(self):
-        """Emite señal para deshabilitar el servicio"""
+        """Emit signal to disable service"""
         self.disable_clicked.emit(self.service.id)
     
     def _on_enable_clicked(self):
-        """Emite señal para habilitar el servicio"""
+        """Emit signal to enable service"""
         self.enable_clicked.emit(self.service.id)
