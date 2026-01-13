@@ -30,32 +30,31 @@ jobs:
 
       - name: Get version from tag
         id: get_version
-        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $env:GITHUB_OUTPUT
+        run: |
+          $version = "${{ github.ref_name }}"
+          echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Extract release notes from CHANGELOG
+        id: changelog
+        run: |
+          $version = "${{ steps.get_version.outputs.VERSION }}"
+          $content = Get-Content CHANGELOG.md -Raw
+          # Extraer sección de la versión actual
+          $pattern = "(?s)## \[$version\].*?(?=## \[|$)"
+          if ($content -match $pattern) {
+            $notes = $matches[0]
+          } else {
+            $notes = "Release $version"
+          }
+          # Escribir a archivo para multilinea
+          $notes | Out-File -FilePath notes.txt -Encoding utf8
+          echo "NOTES_FILE=notes.txt" >> $env:GITHUB_OUTPUT
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           name: Windows AI Removal Tool ${{ steps.get_version.outputs.VERSION }}
-          body: |
-            ## Windows AI Removal Tool ${{ steps.get_version.outputs.VERSION }}
-            
-            ### 📥 Descarga
-            Descarga `WinAIRemovalTool.exe` de los assets abajo.
-            
-            ### ⚠️ Nota
-            - Ejecutar como **Administrador** para modificar configuraciones del sistema
-            - Windows SmartScreen puede mostrar advertencia (click "Más información" → "Ejecutar de todos modos")
-            
-            ### 🤖 Servicios AI soportados
-            - Microsoft Copilot
-            - Windows Recall
-            - Windows Widgets (AI News)
-            - Cortana (Legacy)
-            - Edge Copilot Sidebar
-            - AI Voice Typing
-            - Bing Search
-            - Suggested Actions
-            - Y más...
+          body_path: notes.txt
           files: |
             dist/WinAIRemovalTool.exe
           draft: false
