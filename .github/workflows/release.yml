@@ -1,0 +1,64 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # Se ejecuta cuando creas un tag como v1.0.0
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller pillow
+
+      - name: Build executable
+        run: |
+          pyinstaller --clean app.spec
+
+      - name: Get version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $env:GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Windows AI Removal Tool ${{ steps.get_version.outputs.VERSION }}
+          body: |
+            ## Windows AI Removal Tool ${{ steps.get_version.outputs.VERSION }}
+            
+            ### 📥 Descarga
+            Descarga `WinAIRemovalTool.exe` de los assets abajo.
+            
+            ### ⚠️ Nota
+            - Ejecutar como **Administrador** para modificar configuraciones del sistema
+            - Windows SmartScreen puede mostrar advertencia (click "Más información" → "Ejecutar de todos modos")
+            
+            ### 🤖 Servicios AI soportados
+            - Microsoft Copilot
+            - Windows Recall
+            - Windows Widgets (AI News)
+            - Cortana (Legacy)
+            - Edge Copilot Sidebar
+            - AI Voice Typing
+            - Bing Search
+            - Suggested Actions
+            - Y más...
+          files: |
+            dist/WinAIRemovalTool.exe
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
