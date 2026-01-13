@@ -293,6 +293,7 @@ imported by:
  &#8226;   <a href="#PyQt6.QtGui">PyQt6.QtGui</a>
  &#8226;   <a href="#PyQt6.QtWidgets">PyQt6.QtWidgets</a>
  &#8226;   <a href="#main.py">main.py</a>
+ &#8226;   <a href="#ui.language_selector">ui.language_selector</a>
  &#8226;   <a href="#ui.log_viewer">ui.log_viewer</a>
  &#8226;   <a href="#ui.main_window">ui.main_window</a>
  &#8226;   <a href="#ui.service_card">ui.service_card</a>
@@ -346,6 +347,7 @@ imports:
   <div class="import">
 imported by:
     <a href="#main.py">main.py</a>
+ &#8226;   <a href="#ui.language_selector">ui.language_selector</a>
  &#8226;   <a href="#ui.log_viewer">ui.log_viewer</a>
  &#8226;   <a href="#ui.main_window">ui.main_window</a>
  &#8226;   <a href="#ui.service_card">ui.service_card</a>
@@ -1724,6 +1726,7 @@ imported by:
 imported by:
     <a href="#core.ai_services">core.ai_services</a>
  &#8226;   <a href="#core.detector">core.detector</a>
+ &#8226;   <a href="#core.i18n">core.i18n</a>
  &#8226;   <a href="#core.logger">core.logger</a>
  &#8226;   <a href="#core.manager">core.manager</a>
 
@@ -1772,6 +1775,26 @@ imports:
   <div class="import">
 imported by:
     <a href="#ui.main_window">ui.main_window</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="core.i18n"></a>
+  <a target="code" href="///C:/src/brako718/win-ai-tools/core/i18n.py" type="text/plain"><tt>core.i18n</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#core">core</a>
+ &#8226;   <a href="#locale">locale</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#ui.language_selector">ui.language_selector</a>
+ &#8226;   <a href="#ui.log_viewer">ui.log_viewer</a>
+ &#8226;   <a href="#ui.main_window">ui.main_window</a>
+ &#8226;   <a href="#ui.service_card">ui.service_card</a>
 
   </div>
 
@@ -5852,6 +5875,7 @@ imported by:
     <a href="#_pydecimal">_pydecimal</a>
  &#8226;   <a href="#_strptime">_strptime</a>
  &#8226;   <a href="#calendar">calendar</a>
+ &#8226;   <a href="#core.i18n">core.i18n</a>
  &#8226;   <a href="#gettext">gettext</a>
  &#8226;   <a href="#main.py">main.py</a>
 
@@ -6907,6 +6931,7 @@ imported by:
  &#8226;   <a href="#traceback">traceback</a>
  &#8226;   <a href="#types">types</a>
  &#8226;   <a href="#typing">typing</a>
+ &#8226;   <a href="#ui.language_selector">ui.language_selector</a>
  &#8226;   <a href="#ui.log_viewer">ui.log_viewer</a>
  &#8226;   <a href="#ui.main_window">ui.main_window</a>
  &#8226;   <a href="#ui.service_card">ui.service_card</a>
@@ -7192,10 +7217,31 @@ imported by:
   <a target="code" href="///C:/src/brako718/win-ai-tools/ui/__init__.py" type="text/plain"><tt>ui</tt></a>
 <span class="moduletype">Package</span>  <div class="import">
 imported by:
-    <a href="#ui.log_viewer">ui.log_viewer</a>
+    <a href="#ui.language_selector">ui.language_selector</a>
+ &#8226;   <a href="#ui.log_viewer">ui.log_viewer</a>
  &#8226;   <a href="#ui.main_window">ui.main_window</a>
  &#8226;   <a href="#ui.service_card">ui.service_card</a>
  &#8226;   <a href="#ui.styles">ui.styles</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="ui.language_selector"></a>
+  <a target="code" href="///C:/src/brako718/win-ai-tools/ui/language_selector.py" type="text/plain"><tt>ui.language_selector</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#PyQt6.QtCore">PyQt6.QtCore</a>
+ &#8226;   <a href="#PyQt6.QtWidgets">PyQt6.QtWidgets</a>
+ &#8226;   <a href="#core.i18n">core.i18n</a>
+ &#8226;   <a href="#sys">sys</a>
+ &#8226;   <a href="#ui">ui</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#ui.main_window">ui.main_window</a>
 
   </div>
 
@@ -7208,6 +7254,7 @@ imported by:
 imports:
     <a href="#PyQt6.QtCore">PyQt6.QtCore</a>
  &#8226;   <a href="#PyQt6.QtWidgets">PyQt6.QtWidgets</a>
+ &#8226;   <a href="#core.i18n">core.i18n</a>
  &#8226;   <a href="#core.logger">core.logger</a>
  &#8226;   <a href="#sys">sys</a>
  &#8226;   <a href="#ui">ui</a>
@@ -7231,11 +7278,13 @@ imports:
  &#8226;   <a href="#PyQt6.QtWidgets">PyQt6.QtWidgets</a>
  &#8226;   <a href="#core.ai_services">core.ai_services</a>
  &#8226;   <a href="#core.detector">core.detector</a>
+ &#8226;   <a href="#core.i18n">core.i18n</a>
  &#8226;   <a href="#core.logger">core.logger</a>
  &#8226;   <a href="#core.manager">core.manager</a>
  &#8226;   <a href="#os">os</a>
  &#8226;   <a href="#sys">sys</a>
  &#8226;   <a href="#ui">ui</a>
+ &#8226;   <a href="#ui.language_selector">ui.language_selector</a>
  &#8226;   <a href="#ui.log_viewer">ui.log_viewer</a>
  &#8226;   <a href="#ui.service_card">ui.service_card</a>
  &#8226;   <a href="#ui.styles">ui.styles</a>
@@ -7257,6 +7306,7 @@ imports:
     <a href="#PyQt6.QtCore">PyQt6.QtCore</a>
  &#8226;   <a href="#PyQt6.QtWidgets">PyQt6.QtWidgets</a>
  &#8226;   <a href="#core.ai_services">core.ai_services</a>
+ &#8226;   <a href="#core.i18n">core.i18n</a>
  &#8226;   <a href="#sys">sys</a>
  &#8226;   <a href="#ui">ui</a>
 

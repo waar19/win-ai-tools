@@ -2,6 +2,17 @@
 
 All notable changes to this project are documented here.
 
+## [v1.1.0] - 2026-01-13
+
+### ✨ New Features
+
+- 🌍 **Multi-language support**: English, German (Deutsch), Spanish (Español)
+- 🔄 **Language selector** in the top-right corner
+- 🖥️ **Automatic system language detection**
+- ⚡ **Real-time language switching** without restart
+
+---
+
 ## [v1.0.0] - 2026-01-13
 
 ### 🎉 Initial Release
