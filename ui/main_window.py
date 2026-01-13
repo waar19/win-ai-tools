@@ -18,11 +18,14 @@ from .styles import DARK_THEME
 from .service_card import ServiceCard
 from .log_viewer import LogViewerWidget
 from .language_selector import LanguageSelector
+from .update_banner import UpdateBanner
+from .scheduler_toggle import SchedulerToggle
 from core.detector import AIServiceDetector
 from core.manager import AIServiceManager
 from core.ai_services import AIService, ServiceStatus
 from core.logger import activity_logger
 from core.i18n import I18n, t
+from core.updater import UpdateChecker, UpdateInfo
 
 
 class DetectionWorker(QThread):
@@ -76,6 +79,9 @@ class MainWindow(QMainWindow):
         
         # Listen for language changes
         I18n.add_listener(self._on_language_changed)
+        
+        # Check for updates in background
+        self._check_for_updates()
     
     def _setup_window(self):
         """Configure window properties"""
@@ -96,6 +102,10 @@ class MainWindow(QMainWindow):
         main_layout = QVBoxLayout(central_widget)
         main_layout.setContentsMargins(20, 20, 20, 20)
         main_layout.setSpacing(15)
+        
+        # Update banner placeholder (hidden by default)
+        self.update_banner_container = QVBoxLayout()
+        main_layout.addLayout(self.update_banner_container)
         
         # Header with language selector
         header_layout = QVBoxLayout()
@@ -171,6 +181,10 @@ class MainWindow(QMainWindow):
         splitter.setSizes([600, 400])
         
         main_layout.addWidget(splitter, 1)
+        
+        # Scheduler toggle widget
+        self.scheduler_toggle = SchedulerToggle()
+        main_layout.addWidget(self.scheduler_toggle)
         
         # Footer with global buttons
         footer_layout = QHBoxLayout()
@@ -445,3 +459,19 @@ class MainWindow(QMainWindow):
         # Refresh states and log
         self._start_detection()
         self.log_viewer.refresh()
+    
+    def _check_for_updates(self):
+        """Check for updates in background"""
+        self.update_checker = UpdateChecker()
+        self.update_checker.check_async(self._on_update_check_complete)
+    
+    def _on_update_check_complete(self, update_info: UpdateInfo):
+        """Called when update check completes"""
+        if update_info and update_info.is_newer:
+            # Create and show update banner
+            banner = UpdateBanner(
+                update_info.version,
+                update_info.html_url,
+                self
+            )
+            self.update_banner_container.addWidget(banner)

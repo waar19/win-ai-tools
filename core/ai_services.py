@@ -48,19 +48,15 @@ AI_SERVICES = [
                 "key": "TurnOffWindowsCopilot",
                 "disable_value": 1,
                 "enable_value": 0,
-                "hive": winreg.HKEY_LOCAL_MACHINE
+                "hive": winreg.HKEY_CURRENT_USER
             },
             {
-                "path": r"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced",
-                "key": "ShowCopilotButton",
-                "disable_value": 0,
-                "enable_value": 1,
-                "hive": winreg.HKEY_CURRENT_USER
+                "path": r"SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot",
+                "key": "TurnOffWindowsCopilot",
+                "disable_value": 1,
+                "enable_value": 0,
+                "hive": winreg.HKEY_LOCAL_MACHINE
             }
-        ],
-        appx_packages=[
-            "Microsoft.Copilot",
-            "Microsoft.Windows.Ai.Copilot.Provider"
         ]
     ),
     AIService(
@@ -70,20 +66,19 @@ AI_SERVICES = [
         registry_paths=[
             {
                 "path": r"SOFTWARE\Policies\Microsoft\Windows\WindowsAI",
-                "key": "AllowRecallEnablement",
-                "disable_value": 0,
-                "enable_value": 1,
-                "hive": winreg.HKEY_LOCAL_MACHINE
-            },
-            {
-                "path": r"SOFTWARE\Policies\Microsoft\Windows\WindowsAI",
                 "key": "DisableAIDataAnalysis",
                 "disable_value": 1,
                 "enable_value": 0,
                 "hive": winreg.HKEY_LOCAL_MACHINE
+            },
+            {
+                "path": r"SOFTWARE\Policies\Microsoft\Windows\WindowsAI",
+                "key": "DisableRecall",
+                "disable_value": 1,
+                "enable_value": 0,
+                "hive": winreg.HKEY_CURRENT_USER
             }
-        ],
-        windows_feature="Recall"
+        ]
     ),
     AIService(
         id="ai_explorer",
@@ -92,14 +87,11 @@ AI_SERVICES = [
         registry_paths=[
             {
                 "path": r"SOFTWARE\Policies\Microsoft\Windows\WindowsAI",
-                "key": "DisableAIDataAnalysis",
+                "key": "DisableAIExplorer",
                 "disable_value": 1,
                 "enable_value": 0,
                 "hive": winreg.HKEY_LOCAL_MACHINE
             }
-        ],
-        appx_packages=[
-            "MicrosoftWindows.Client.AIX"
         ]
     ),
     AIService(
@@ -112,13 +104,6 @@ AI_SERVICES = [
                 "key": "DisableSearchBoxSuggestions",
                 "disable_value": 1,
                 "enable_value": 0,
-                "hive": winreg.HKEY_LOCAL_MACHINE
-            },
-            {
-                "path": r"SOFTWARE\Microsoft\Windows\CurrentVersion\Search",
-                "key": "BingSearchEnabled",
-                "disable_value": 0,
-                "enable_value": 1,
                 "hive": winreg.HKEY_CURRENT_USER
             }
         ]
@@ -129,8 +114,15 @@ AI_SERVICES = [
         description="Sugerencias web y AI en la búsqueda de la barra de tareas",
         registry_paths=[
             {
+                "path": r"SOFTWARE\Policies\Microsoft\Windows\Windows Search",
+                "key": "DisableWebSearch",
+                "disable_value": 1,
+                "enable_value": 0,
+                "hive": winreg.HKEY_LOCAL_MACHINE
+            },
+            {
                 "path": r"SOFTWARE\Microsoft\Windows\CurrentVersion\Search",
-                "key": "CortanaConsent",
+                "key": "BingSearchEnabled",
                 "disable_value": 0,
                 "enable_value": 1,
                 "hive": winreg.HKEY_CURRENT_USER
@@ -186,20 +178,13 @@ AI_SERVICES = [
         ]
     ),
     AIService(
-        id="edge_copilot",
+        id="edge_copilot_sidebar",
         name="Edge Copilot Sidebar",
-        description="Panel lateral de Copilot en Microsoft Edge",
+        description="Barra lateral de Copilot en Microsoft Edge",
         registry_paths=[
             {
                 "path": r"SOFTWARE\Policies\Microsoft\Edge",
                 "key": "HubsSidebarEnabled",
-                "disable_value": 0,
-                "enable_value": 1,
-                "hive": winreg.HKEY_LOCAL_MACHINE
-            },
-            {
-                "path": r"SOFTWARE\Policies\Microsoft\Edge",
-                "key": "CopilotCDPPageContext",
                 "disable_value": 0,
                 "enable_value": 1,
                 "hive": winreg.HKEY_LOCAL_MACHINE
@@ -209,28 +194,28 @@ AI_SERVICES = [
     AIService(
         id="ai_voice_typing",
         name="AI Voice Typing",
-        description="Dictado por voz con transcripción AI mejorada",
+        description="Dictado por voz mejorado con AI",
         registry_paths=[
             {
-                "path": r"SOFTWARE\Microsoft\Speech_OneCore\Preferences",
-                "key": "VoiceActivationEnableAboveLockscreen",
+                "path": r"SOFTWARE\Policies\Microsoft\InputPersonalization",
+                "key": "AllowInputPersonalization",
                 "disable_value": 0,
                 "enable_value": 1,
-                "hive": winreg.HKEY_CURRENT_USER
+                "hive": winreg.HKEY_LOCAL_MACHINE
             },
             {
-                "path": r"SOFTWARE\Microsoft\Windows\CurrentVersion\CPSS\Store\VoiceActivation",
-                "key": "Value",
-                "disable_value": 0,
-                "enable_value": 1,
-                "hive": winreg.HKEY_CURRENT_USER
+                "path": r"SOFTWARE\Policies\Microsoft\InputPersonalization",
+                "key": "RestrictImplicitTextCollection",
+                "disable_value": 1,
+                "enable_value": 0,
+                "hive": winreg.HKEY_LOCAL_MACHINE
             }
         ]
     ),
     AIService(
         id="suggested_actions",
         name="Suggested Actions",
-        description="Acciones sugeridas por AI al copiar texto/fechas",
+        description="Acciones sugeridas por AI al copiar texto (fechas, números)",
         registry_paths=[
             {
                 "path": r"SOFTWARE\Microsoft\Windows\CurrentVersion\SmartActionPlatform\SmartClipboard",
@@ -239,6 +224,64 @@ AI_SERVICES = [
                 "enable_value": 0,
                 "hive": winreg.HKEY_CURRENT_USER
             }
+        ]
+    ),
+    AIService(
+        id="edge_shopping",
+        name="Edge Shopping (AI)",
+        description="Asistente de compras y comparador de precios en Edge",
+        registry_paths=[
+            {
+                "path": r"SOFTWARE\Policies\Microsoft\Edge",
+                "key": "ShoppingAssistantEnabled",
+                "disable_value": 0,
+                "enable_value": 1,
+                "hive": winreg.HKEY_LOCAL_MACHINE
+            }
+        ]
+    ),
+    AIService(
+        id="paint_cocreator",
+        name="Paint Cocreator",
+        description="Generación de imágenes con DALL-E en Paint",
+        registry_paths=[
+            {
+                "path": r"SOFTWARE\Policies\Microsoft\Windows\Paint",
+                "key": "DontUseAI",
+                "disable_value": 1,
+                "enable_value": 0,
+                "hive": winreg.HKEY_LOCAL_MACHINE
+            }
+        ]
+    ),
+    AIService(
+        id="photos_ai",
+        name="Photos AI Features",
+        description="Búsqueda y edición avanzada con AI en Fotos",
+        registry_paths=[
+            {
+                "path": r"SOFTWARE\Microsoft\Windows\CurrentVersion\Photos",
+                "key": "DisableAI",
+                "disable_value": 1,
+                "enable_value": 0,
+                "hive": winreg.HKEY_CURRENT_USER
+            }
+        ]
+    ),
+    AIService(
+        id="clipchamp_ai",
+        name="Clipchamp AI",
+        description="Editor de video con funciones de AI",
+        appx_packages=[
+            "Clipchamp.Clipchamp"
+        ]
+    ),
+    AIService(
+        id="designer_ai",
+        name="Microsoft Designer",
+        description="Herramienta de diseño gráfico con IA",
+        appx_packages=[
+            "Microsoft.Designer"
         ]
     )
 ]

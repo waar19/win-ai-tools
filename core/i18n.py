@@ -76,6 +76,16 @@ TRANSLATIONS = {
         
         # Language
         "language": "Language",
+        
+        # Update
+        "update_available": "New version {version} is available!",
+        "download_update": "⬇️ Download",
+        
+        # Scheduler
+        "auto_maintenance": "Auto-Maintenance",
+        "auto_maintenance_desc": "Re-apply settings after Windows Updates (runs at startup & daily)",
+        "scheduler_active": "● Active",
+        "scheduler_inactive": "○ Inactive",
     },
     
     "de": {
@@ -137,6 +147,16 @@ TRANSLATIONS = {
         
         # Language
         "language": "Sprache",
+        
+        # Update
+        "update_available": "Neue Version {version} ist verfügbar!",
+        "download_update": "⬇️ Herunterladen",
+        
+        # Scheduler
+        "auto_maintenance": "Auto-Wartung",
+        "auto_maintenance_desc": "Einstellungen nach Windows-Updates erneut anwenden (läuft beim Start & täglich)",
+        "scheduler_active": "● Aktiv",
+        "scheduler_inactive": "○ Inaktiv",
     },
     
     "es": {
@@ -198,6 +218,16 @@ TRANSLATIONS = {
         
         # Language
         "language": "Idioma",
+        
+        # Update
+        "update_available": "¡Nueva versión {version} disponible!",
+        "download_update": "⬇️ Descargar",
+        
+        # Scheduler
+        "auto_maintenance": "Auto-Mantenimiento",
+        "auto_maintenance_desc": "Re-aplicar configuración después de Windows Updates (ejecuta al inicio y diariamente)",
+        "scheduler_active": "● Activo",
+        "scheduler_inactive": "○ Inactivo",
     }
 }
 

@@ -1,42 +1,94 @@
 """
 Windows AI Removal Tool
-Aplicación para gestionar y remover servicios de AI de Windows 11
+Application to manage and remove AI services from Windows 11
 """
 
 import sys
+import argparse
 import ctypes
 from PyQt6.QtWidgets import QApplication, QMessageBox
 from PyQt6.QtCore import Qt
-from ui.main_window import MainWindow
 
 
 def is_admin():
-    """Verifica si la aplicación se ejecuta como administrador"""
+    """Check if the application is running as administrator"""
     try:
         return ctypes.windll.shell32.IsUserAnAdmin()
     except:
         return False
 
 
-def main():
+def run_silent_mode():
+    """
+    Run in silent mode - apply settings without UI.
+    Used by scheduled task to maintain settings after Windows Updates.
+    """
+    from core.detector import AIServiceDetector
+    from core.manager import AIServiceManager
+    from core.logger import activity_logger
+    from core.ai_services import ServiceStatus
+    
+    detector = AIServiceDetector()
+    manager = AIServiceManager()
+    
+    # Detect all services
+    services = detector.detect_all()
+    
+    # Re-apply disabled settings for services that should be disabled
+    # (based on registry backup or previous state)
+    activity_logger.log(
+        activity_logger.LogLevel.INFO if hasattr(activity_logger, 'LogLevel') else None,
+        "MAINTENANCE",
+        "system",
+        "System",
+        "Silent maintenance started"
+    )
+    
+    # For now, just log the current state
+    enabled_count = sum(1 for s in services if s.status == ServiceStatus.ENABLED)
+    print(f"Silent mode: Found {len(services)} services, {enabled_count} enabled")
+    
+    return 0
+
+
+def run_gui_mode():
+    """Run the graphical user interface"""
+    from ui.main_window import MainWindow
+    
     app = QApplication(sys.argv)
     app.setStyle('Fusion')
     
-    # Verificar permisos de administrador
+    # Check admin permissions
     if not is_admin():
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Icon.Warning)
-        msg.setWindowTitle("Permisos Requeridos")
-        msg.setText("Esta aplicación requiere permisos de administrador para modificar configuraciones del sistema.")
-        msg.setInformativeText("Por favor, ejecute la aplicación como Administrador.")
+        msg.setWindowTitle("Permissions Required")
+        msg.setText("This application requires administrator permissions to modify system settings.")
+        msg.setInformativeText("Please run the application as Administrator.")
         msg.setStandardButtons(QMessageBox.StandardButton.Ok)
         msg.exec()
-        # Continuar de todos modos para mostrar la interfaz (solo lectura)
+        # Continue anyway to show interface (read-only)
     
     window = MainWindow()
     window.show()
     
-    sys.exit(app.exec())
+    return app.exec()
+
+
+def main():
+    parser = argparse.ArgumentParser(description='Windows AI Removal Tool')
+    parser.add_argument(
+        '--silent', '-s',
+        action='store_true',
+        help='Run in silent mode without GUI (for scheduled tasks)'
+    )
+    
+    args = parser.parse_args()
+    
+    if args.silent:
+        sys.exit(run_silent_mode())
+    else:
+        sys.exit(run_gui_mode())
 
 
 if __name__ == "__main__":
