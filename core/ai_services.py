@@ -136,6 +136,110 @@ AI_SERVICES = [
                 "hive": winreg.HKEY_CURRENT_USER
             }
         ]
+    ),
+    AIService(
+        id="windows_widgets",
+        name="Windows Widgets (AI News)",
+        description="Widgets con noticias personalizadas por AI en el escritorio",
+        registry_paths=[
+            {
+                "path": r"SOFTWARE\Policies\Microsoft\Dsh",
+                "key": "AllowNewsAndInterests",
+                "disable_value": 0,
+                "enable_value": 1,
+                "hive": winreg.HKEY_LOCAL_MACHINE
+            },
+            {
+                "path": r"SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced",
+                "key": "TaskbarDa",
+                "disable_value": 0,
+                "enable_value": 1,
+                "hive": winreg.HKEY_CURRENT_USER
+            }
+        ],
+        appx_packages=[
+            "MicrosoftWindows.Client.WebExperience"
+        ]
+    ),
+    AIService(
+        id="cortana",
+        name="Cortana (Legacy)",
+        description="Asistente de voz Cortana (versión legacy)",
+        registry_paths=[
+            {
+                "path": r"SOFTWARE\Policies\Microsoft\Windows\Windows Search",
+                "key": "AllowCortana",
+                "disable_value": 0,
+                "enable_value": 1,
+                "hive": winreg.HKEY_LOCAL_MACHINE
+            },
+            {
+                "path": r"SOFTWARE\Microsoft\Windows\CurrentVersion\Search",
+                "key": "CortanaEnabled",
+                "disable_value": 0,
+                "enable_value": 1,
+                "hive": winreg.HKEY_CURRENT_USER
+            }
+        ],
+        appx_packages=[
+            "Microsoft.549981C3F5F10"
+        ]
+    ),
+    AIService(
+        id="edge_copilot",
+        name="Edge Copilot Sidebar",
+        description="Panel lateral de Copilot en Microsoft Edge",
+        registry_paths=[
+            {
+                "path": r"SOFTWARE\Policies\Microsoft\Edge",
+                "key": "HubsSidebarEnabled",
+                "disable_value": 0,
+                "enable_value": 1,
+                "hive": winreg.HKEY_LOCAL_MACHINE
+            },
+            {
+                "path": r"SOFTWARE\Policies\Microsoft\Edge",
+                "key": "CopilotCDPPageContext",
+                "disable_value": 0,
+                "enable_value": 1,
+                "hive": winreg.HKEY_LOCAL_MACHINE
+            }
+        ]
+    ),
+    AIService(
+        id="ai_voice_typing",
+        name="AI Voice Typing",
+        description="Dictado por voz con transcripción AI mejorada",
+        registry_paths=[
+            {
+                "path": r"SOFTWARE\Microsoft\Speech_OneCore\Preferences",
+                "key": "VoiceActivationEnableAboveLockscreen",
+                "disable_value": 0,
+                "enable_value": 1,
+                "hive": winreg.HKEY_CURRENT_USER
+            },
+            {
+                "path": r"SOFTWARE\Microsoft\Windows\CurrentVersion\CPSS\Store\VoiceActivation",
+                "key": "Value",
+                "disable_value": 0,
+                "enable_value": 1,
+                "hive": winreg.HKEY_CURRENT_USER
+            }
+        ]
+    ),
+    AIService(
+        id="suggested_actions",
+        name="Suggested Actions",
+        description="Acciones sugeridas por AI al copiar texto/fechas",
+        registry_paths=[
+            {
+                "path": r"SOFTWARE\Microsoft\Windows\CurrentVersion\SmartActionPlatform\SmartClipboard",
+                "key": "Disabled",
+                "disable_value": 1,
+                "enable_value": 0,
+                "hive": winreg.HKEY_CURRENT_USER
+            }
+        ]
     )
 ]
 

@@ -48,7 +48,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=None,  # Puedes agregar un icono aquí: icon='app.ico'
+    icon='app.ico',  # Icono personalizado de la app
     manifest='app.manifest',  # Solicita permisos de admin
     uac_admin=True,  # Solicita UAC admin
 )
