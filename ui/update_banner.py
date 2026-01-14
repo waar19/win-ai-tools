@@ -1,10 +1,8 @@
-"""
-Update notification banner widget
-"""
-
 from PyQt6.QtWidgets import QFrame, QHBoxLayout, QLabel, QPushButton
 from PyQt6.QtCore import pyqtSignal
 import webbrowser
+
+from core.i18n import t
 
 
 class UpdateBanner(QFrame):
@@ -37,15 +35,15 @@ class UpdateBanner(QFrame):
         icon_label.setStyleSheet("font-size: 18px;")
         layout.addWidget(icon_label)
         
-        # Message
-        message = QLabel(f"New version <b>{version}</b> is available!")
+        # Message (translated)
+        message = QLabel(t("update_available", version=version))
         message.setStyleSheet("color: #eaeaea; font-size: 13px;")
         layout.addWidget(message)
         
         layout.addStretch()
         
-        # Download button
-        download_btn = QPushButton("⬇️ Download")
+        # Download button (translated)
+        download_btn = QPushButton(t("download_update"))
         download_btn.setStyleSheet("""
             QPushButton {
                 background-color: #00d4ff;

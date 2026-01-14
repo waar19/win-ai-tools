@@ -10,7 +10,7 @@ import threading
 
 
 # Current version of the application
-CURRENT_VERSION = "1.1.0"
+CURRENT_VERSION = "1.2.0"
 
 # GitHub repository info
 GITHUB_OWNER = "waar19"
