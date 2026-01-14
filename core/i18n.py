@@ -41,6 +41,10 @@ TRANSLATIONS = {
         "export_config": "📤 Export Config",
         "import_config": "📥 Import Config",
         "presets": "⚡ Presets",
+        "safety_warning": "⚠️ Please proceed with caution. Some changes may affect system functionality.",
+        "backup_reminder": "💾 Automatic registry backup enabled.",
+        "confirm_action": "Are you sure you want to {action} {service}?",
+        "confirm_disable_all": "Are you sure you want to disable ALL services? This may affect Windows functionality.",
         
         # Presets
         "preset_privacy_max": "Maximum Privacy (Disable All)",
@@ -130,6 +134,10 @@ TRANSLATIONS = {
         "export_config": "📤 Config Exportieren",
         "import_config": "📥 Config Importieren",
         "presets": "⚡ Vorlagen",
+        "safety_warning": "⚠️ Bitte vorsichtig vorgehen. Änderungen können die Systemfunktionalität beeinträchtigen.",
+        "backup_reminder": "💾 Automatisches Registry-Backup aktiviert.",
+        "confirm_action": "Sind Sie sicher, dass Sie {service} {action} wollen?",
+        "confirm_disable_all": "Sind Sie sicher, dass Sie ALLE Dienste deaktivieren wollen? Dies kann Windows beeinträchtigen.",
         
         # Presets
         "preset_privacy_max": "Maximale Privatsphäre (Alle aus)",
@@ -219,6 +227,10 @@ TRANSLATIONS = {
         "export_config": "📤 Exportar Config",
         "import_config": "📥 Importar Config",
         "presets": "⚡ Preajustes",
+        "safety_warning": "⚠️ Proceda con precaución. Algunos cambios pueden afectar funciones del sistema.",
+        "backup_reminder": "💾 Respaldo automático de registro habilitado.",
+        "confirm_action": "¿Está seguro de querer {action} el servicio {service}?",
+        "confirm_disable_all": "¿Seguro que desea desactivar TODOS los servicios? Esto puede afectar a Windows.",
         
         # Presets
         "preset_privacy_max": "Privacidad Máxima (Desactivar Todo)",

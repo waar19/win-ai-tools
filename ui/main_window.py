@@ -190,6 +190,19 @@ class MainWindow(QMainWindow):
         self.scheduler_toggle = SchedulerToggle()
         main_layout.addWidget(self.scheduler_toggle)
         
+        # Safety Warnings
+        warning_layout = QHBoxLayout()
+        self.safety_label = QLabel(t("safety_warning"))
+        self.safety_label.setStyleSheet("color: #ffcc00; font-weight: bold; margin-left: 10px;")
+        self.backup_label = QLabel(t("backup_reminder"))
+        self.backup_label.setStyleSheet("color: #00d4ff; font-style: italic; margin-right: 10px;")
+        
+        warning_layout.addWidget(self.safety_label)
+        warning_layout.addStretch()
+        warning_layout.addWidget(self.backup_label)
+        
+        main_layout.addLayout(warning_layout)
+        
         # Footer with global buttons
         footer_layout = QHBoxLayout()
         
