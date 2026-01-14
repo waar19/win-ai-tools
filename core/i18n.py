@@ -117,6 +117,7 @@ TRANSLATIONS = {
         "permission_error": "No permission to modify: {path}",
         "registry_error": "Registry error: {error}",
         "restart_recommended": "Some changes may require a system restart to take full effect.",
+        "scheduler_needs_admin": "This feature requires administrator permissions. Please run the application as Admin.",
     },
     
     "de": {
@@ -219,6 +220,7 @@ TRANSLATIONS = {
         "permission_error": "Keine Berechtigung zum Ändern: {path}",
         "registry_error": "Registry-Fehler: {error}",
         "restart_recommended": "Einige Änderungen erfordern möglicherweise einen Systemneustart, um vollständig wirksam zu werden.",
+        "scheduler_needs_admin": "Diese Funktion erfordert Administratorrechte. Bitte als Admin ausführen.",
     },
     
     "es": {
@@ -321,6 +323,7 @@ TRANSLATIONS = {
         "permission_error": "Sin permisos para modificar: {path}",
         "registry_error": "Error en registry: {error}",
         "restart_recommended": "Algunos cambios pueden requerir reiniciar el sistema para tomar efecto completo.",
+        "scheduler_needs_admin": "Esta función requiere permisos de administrador. Por favor, ejecute la aplicación como Admin.",
     }
 }
 

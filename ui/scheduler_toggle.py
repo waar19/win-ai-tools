@@ -110,10 +110,16 @@ class SchedulerToggle(QFrame):
             success, message = create_task()
         
         if not success:
+            # Check if it's a permissions issue
+            if "access" in message.lower() or "denied" in message.lower():
+                error_msg = t("scheduler_needs_admin")
+            else:
+                error_msg = message
+                
             QMessageBox.warning(
                 self,
                 t("error_title"),
-                message
+                error_msg
             )
         
         self._refresh_status()
