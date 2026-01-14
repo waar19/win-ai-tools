@@ -60,11 +60,12 @@ def run_gui_mode(start_minimized=False):
     
     # Check admin permissions
     if not is_admin():
+        from core.i18n import t
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Icon.Warning)
-        msg.setWindowTitle("Permissions Required")
-        msg.setText("This application requires administrator permissions to modify system settings.")
-        msg.setInformativeText("Please run the application as Administrator.")
+        msg.setWindowTitle(t("permissions_required"))
+        msg.setText(t("admin_required"))
+        msg.setInformativeText(t("run_as_admin"))
         msg.setStandardButtons(QMessageBox.StandardButton.Ok)
         msg.exec()
         # Continue anyway to show interface (read-only)
