@@ -100,12 +100,21 @@ class SchedulerToggle(QFrame):
     
     def _on_toggle(self):
         """Handle toggle button click"""
+        from PyQt6.QtWidgets import QMessageBox
+        
         installed = is_task_installed()
         
         if installed:
             success, message = remove_task()
         else:
             success, message = create_task()
+        
+        if not success:
+            QMessageBox.warning(
+                self,
+                t("error_title"),
+                message
+            )
         
         self._refresh_status()
         self.status_changed.emit(is_task_installed())
