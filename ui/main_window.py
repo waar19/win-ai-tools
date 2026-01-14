@@ -21,6 +21,7 @@ from .log_viewer import LogViewerWidget
 from .language_selector import LanguageSelector
 from .update_banner import UpdateBanner
 from .scheduler_toggle import SchedulerToggle
+from .system_tray import SystemTrayIcon # Added import
 from core.detector import AIServiceDetector
 from core.manager import AIServiceManager
 from core.ai_services import AIService, ServiceStatus
@@ -77,6 +78,7 @@ class MainWindow(QMainWindow):
         self._setup_window()
         self._setup_ui()
         self._apply_styles()
+        self._setup_tray()
         self._start_detection()
         
         # Listen for language changes
@@ -568,6 +570,40 @@ class MainWindow(QMainWindow):
             
         except Exception as e:
             QMessageBox.critical(self, t("error_title"), str(e))
+    
+    def _setup_tray(self):
+        """Initialize system tray icon"""
+        self.tray_icon = SystemTrayIcon(self)
+        self.tray_icon.show_window.connect(self._show_window)
+        self.tray_icon.quit_app.connect(self._quit_app)
+        self.tray_icon.show()
+        
+    def _show_window(self):
+        """Show and restore window"""
+        self.show()
+        self.setWindowState(self.windowState() & ~Qt.WindowState.WindowMinimized | Qt.WindowState.WindowActive)
+        self.activateWindow()
+        
+    def _quit_app(self):
+        """Quit the application"""
+        QApplication.quit()
+        
+    def closeEvent(self, event):
+        """Handle close event - minimize to tray instead of exit"""
+        if self.tray_icon.isVisible():
+            if not getattr(self, '_tray_hint_shown', False):
+                self.tray_icon.showMessage(
+                    t("app_title"),
+                    t("minimize_to_tray_hint"),
+                    QSystemTrayIcon.MessageIcon.Information,
+                    2000
+                )
+                self._tray_hint_shown = True
+                
+            self.hide()
+            event.ignore()
+        else:
+            event.accept()
     
     def _show_presets_menu(self):
         """Show menu with configuration presets"""

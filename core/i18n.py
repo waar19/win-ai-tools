@@ -48,6 +48,12 @@ TRANSLATIONS = {
         "preset_reset": "Reset to Defaults (Enable All)",
         "preset_applied": "Preset '{name}' applied successfully!",
         
+        # System Tray
+        "tray_open": "Open Dashboard",
+        "tray_quit": "Quit Application",
+        "tray_start_with_windows": "Start with Windows",
+        "minimize_to_tray_hint": "App is running in background. Click icon to open.",
+        
         # Headers
         "detected_services": "🛡️ Detected AI Services",
         "activity_log": "📋 Activity Log",
@@ -131,6 +137,12 @@ TRANSLATIONS = {
         "preset_reset": "Zurücksetzen (Alle an)",
         "preset_applied": "Vorlage '{name}' erfolgreich angewendet!",
         
+        # System Tray
+        "tray_open": "Dashboard Öffnen",
+        "tray_quit": "Beenden",
+        "tray_start_with_windows": "Mit Windows starten",
+        "minimize_to_tray_hint": "App läuft im Hintergrund. Klicken zum Öffnen.",
+        
         # Headers
         "detected_services": "🛡️ Erkannte KI-Dienste",
         "activity_log": "📋 Aktivitätsprotokoll",
@@ -213,6 +225,12 @@ TRANSLATIONS = {
         "preset_balanced": "Balanceado (Mantener Búsqueda)",
         "preset_reset": "Restaurar Defaults (Activar Todo)",
         "preset_applied": "¡Preajuste '{name}' aplicado exitosamente!",
+        
+        # System Tray
+        "tray_open": "Abrir Dashboard",
+        "tray_quit": "Salir",
+        "tray_start_with_windows": "Iniciar con Windows",
+        "minimize_to_tray_hint": "La app se ejecuta en segundo plano. Clic para abrir.",
         
         # Headers
         "detected_services": "🛡️ Servicios AI Detectados",

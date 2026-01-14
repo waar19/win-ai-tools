@@ -51,7 +51,7 @@ def run_silent_mode():
     return 0
 
 
-def run_gui_mode():
+def run_gui_mode(start_minimized=False):
     """Run the graphical user interface"""
     from ui.main_window import MainWindow
     
@@ -69,9 +69,14 @@ def run_gui_mode():
         msg.exec()
         # Continue anyway to show interface (read-only)
     
-    window = MainWindow()
-    window.show()
+    window = MainWindow() # TODO: Pass start_minimized if window supports it, or handle here
     
+    if not start_minimized:
+        window.show()
+    else:
+        # Just ensure tray is setup (happens in specific method now)
+        pass
+        
     return app.exec()
 
 
@@ -82,13 +87,18 @@ def main():
         action='store_true',
         help='Run in silent mode without GUI (for scheduled tasks)'
     )
+    parser.add_argument(
+        '--minimized', '-m',
+        action='store_true',
+        help='Start application minimized to system tray'
+    )
     
     args = parser.parse_args()
     
     if args.silent:
         sys.exit(run_silent_mode())
     else:
-        sys.exit(run_gui_mode())
+        sys.exit(run_gui_mode(start_minimized=args.minimized))
 
 
 if __name__ == "__main__":
