@@ -388,6 +388,14 @@ class MainWindow(QMainWindow):
             updated_service = self.detector.refresh_service(service.id)
             if updated_service and service.id in self.service_cards:
                 self.service_cards[service.id].update_status(updated_service.status)
+            
+            # Show restart recommendation for disable actions
+            if action == "disable":
+                QMessageBox.information(
+                    self,
+                    t("info"),
+                    t("restart_recommended")
+                )
         else:
             self.status_label.setText(t("error", message=message))
             QMessageBox.warning(self, t("error_title"), message)

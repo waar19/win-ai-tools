@@ -116,6 +116,7 @@ TRANSLATIONS = {
         "no_changes": "No changes performed",
         "permission_error": "No permission to modify: {path}",
         "registry_error": "Registry error: {error}",
+        "restart_recommended": "Some changes may require a system restart to take full effect.",
     },
     
     "de": {
@@ -217,6 +218,7 @@ TRANSLATIONS = {
         "no_changes": "Keine Änderungen vorgenommen",
         "permission_error": "Keine Berechtigung zum Ändern: {path}",
         "registry_error": "Registry-Fehler: {error}",
+        "restart_recommended": "Einige Änderungen erfordern möglicherweise einen Systemneustart, um vollständig wirksam zu werden.",
     },
     
     "es": {
@@ -318,6 +320,7 @@ TRANSLATIONS = {
         "no_changes": "No se realizaron cambios",
         "permission_error": "Sin permisos para modificar: {path}",
         "registry_error": "Error en registry: {error}",
+        "restart_recommended": "Algunos cambios pueden requerir reiniciar el sistema para tomar efecto completo.",
     }
 }
 
