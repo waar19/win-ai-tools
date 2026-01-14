@@ -35,7 +35,34 @@ jobs:
         id: get_version
         run: |
           $version = "${{ github.ref_name }}"
+          # Remove 'v' prefix for file naming (v1.2.0 -> 1.2.0)
+          $versionClean = $version -replace '^v', ''
           echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+          echo "VERSION_CLEAN=$versionClean" >> $env:GITHUB_OUTPUT
+
+      - name: Install NSIS
+        run: |
+          choco install nsis -y
+          echo "C:\Program Files (x86)\NSIS" >> $env:GITHUB_PATH
+
+      - name: Update version in installer.nsi
+        run: |
+          $version = "${{ steps.get_version.outputs.VERSION_CLEAN }}"
+          $content = Get-Content installer.nsi -Raw
+          # Update OutFile with correct version
+          $content = $content -replace 'OutFile "WinAIRemovalTool_v[\d\.]+_win_x64_Setup\.exe"', "OutFile `"WinAIRemovalTool_v${version}_win_x64_Setup.exe`""
+          # Update DisplayVersion
+          $content = $content -replace 'DisplayVersion" "[\d\.]+"', "DisplayVersion`" `"${version}`""
+          $content | Set-Content installer.nsi -Encoding UTF8
+
+      - name: Build NSIS Installer
+        run: |
+          makensis installer.nsi
+
+      - name: Create Portable ZIP
+        run: |
+          $version = "${{ steps.get_version.outputs.VERSION_CLEAN }}"
+          Compress-Archive -Path 'dist\WinAIRemovalTool.exe', 'README.md', 'LICENSE' -DestinationPath "WinAIRemovalTool_v${version}_win_x64_Portable.zip" -Force
 
       - name: Extract release notes from CHANGELOG
         id: changelog
@@ -60,6 +87,8 @@ jobs:
           body_path: notes.txt
           files: |
             dist/WinAIRemovalTool.exe
+            WinAIRemovalTool_v${{ steps.get_version.outputs.VERSION_CLEAN }}_win_x64_Setup.exe
+            WinAIRemovalTool_v${{ steps.get_version.outputs.VERSION_CLEAN }}_win_x64_Portable.zip
           draft: false
           prerelease: false
         env:

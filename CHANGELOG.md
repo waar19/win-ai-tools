@@ -2,6 +2,36 @@
 
 All notable changes to this project are documented here.
 
+## [v1.2.0] - 2026-01-14
+
+### ✨ New Features
+
+- 🎯 **Configuration Presets**: One-click presets for Privacy Mode, Balanced, and Gaming mode
+- ⏰ **Scheduled Maintenance**: Automatically re-apply settings after Windows Updates
+- 🚀 **Start with Windows**: Option to launch app at system startup
+- 🔔 **System Tray**: Minimize to tray with quick access menu
+- 📤 **Export/Import**: Share configurations between computers
+- 🔄 **Auto-update checker**: Get notified when new versions are available
+
+### 🚀 Performance Improvements
+
+- ⚡ Asynchronous loading of services (no UI freeze)
+- 🧵 Background thread for detection and actions
+- 🎨 Smoother UI transitions
+
+### 📦 Build & Distribution
+
+- 🛠️ **NSIS Installer**: Professional Windows installer with Start Menu and Desktop shortcuts
+- 📁 **Portable ZIP**: Standalone portable version
+- 🤖 **GitHub Actions**: Automated builds include both installer and portable versions
+
+### 🐛 Bug Fixes
+
+- Fixed UI lag when switching between sections
+- Improved error handling for registry operations
+
+---
+
 ## [v1.1.0] - 2026-01-13
 
 ### ✨ New Features
