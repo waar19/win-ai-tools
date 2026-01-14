@@ -10,7 +10,7 @@ from PyQt6.QtCore import pyqtSignal, Qt
 import sys
 sys.path.append('..')
 from core.scheduler import is_task_installed, create_task, remove_task
-from core.i18n import t
+from core.i18n import t, I18n
 
 
 class SchedulerToggle(QFrame):
@@ -22,6 +22,9 @@ class SchedulerToggle(QFrame):
         super().__init__(parent)
         self._setup_ui()
         self._refresh_status()
+        
+        # Listen for language changes
+        I18n.add_listener(self._on_language_changed)
     
     def _setup_ui(self):
         self.setStyleSheet("""
@@ -44,27 +47,27 @@ class SchedulerToggle(QFrame):
         icon.setStyleSheet("font-size: 18px;")
         title_layout.addWidget(icon)
         
-        title = QLabel("Auto-Maintenance")
-        title.setStyleSheet("font-size: 14px; font-weight: bold; color: #eaeaea;")
-        title_layout.addWidget(title)
+        self.title_label = QLabel(t("auto_maintenance"))
+        self.title_label.setStyleSheet("font-size: 14px; font-weight: bold; color: #eaeaea;")
+        title_layout.addWidget(self.title_label)
         title_layout.addStretch()
         
         info_layout.addLayout(title_layout)
         
-        desc = QLabel("Re-apply settings after Windows Updates (runs at startup & daily)")
-        desc.setStyleSheet("font-size: 11px; color: #888;")
-        desc.setWordWrap(True)
-        info_layout.addWidget(desc)
+        self.desc_label = QLabel(t("auto_maintenance_desc"))
+        self.desc_label.setStyleSheet("font-size: 11px; color: #888;")
+        self.desc_label.setWordWrap(True)
+        info_layout.addWidget(self.desc_label)
         
         layout.addLayout(info_layout, 1)
         
         # Status indicator
-        self.status_label = QLabel("Checking...")
+        self.status_label = QLabel("...")
         self.status_label.setStyleSheet("color: #888; font-size: 12px;")
         layout.addWidget(self.status_label)
         
         # Toggle button
-        self.toggle_btn = QPushButton("Enable")
+        self.toggle_btn = QPushButton(t("enable"))
         self.toggle_btn.setFixedWidth(80)
         self.toggle_btn.clicked.connect(self._on_toggle)
         self.toggle_btn.setStyleSheet("""
@@ -87,13 +90,13 @@ class SchedulerToggle(QFrame):
         installed = is_task_installed()
         
         if installed:
-            self.status_label.setText("● Active")
+            self.status_label.setText(t("scheduler_active"))
             self.status_label.setStyleSheet("color: #4ade80; font-size: 12px;")
-            self.toggle_btn.setText("Disable")
+            self.toggle_btn.setText(t("disable"))
         else:
-            self.status_label.setText("○ Inactive")
+            self.status_label.setText(t("scheduler_inactive"))
             self.status_label.setStyleSheet("color: #888; font-size: 12px;")
-            self.toggle_btn.setText("Enable")
+            self.toggle_btn.setText(t("enable"))
     
     def _on_toggle(self):
         """Handle toggle button click"""
@@ -106,6 +109,12 @@ class SchedulerToggle(QFrame):
         
         self._refresh_status()
         self.status_changed.emit(is_task_installed())
+    
+    def _on_language_changed(self):
+        """Update UI when language changes"""
+        self.title_label.setText(t("auto_maintenance"))
+        self.desc_label.setText(t("auto_maintenance_desc"))
+        self._refresh_status()
     
     def is_enabled(self) -> bool:
         """Check if scheduled task is enabled"""
