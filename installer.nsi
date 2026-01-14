@@ -6,7 +6,7 @@
 
   ;Name and file
   Name "Windows AI Removal Tool"
-  OutFile "Setup_WinAIRemovalTool_v1.2.0.exe"
+  OutFile "WinAIRemovalTool_v1.2.0_win_x64_Setup.exe"
   Unicode True
 
   ;Default installation folder
