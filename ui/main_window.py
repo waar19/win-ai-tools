@@ -261,7 +261,12 @@ class MainWindow(QMainWindow):
         self.export_btn.setText(t("export_config"))
         self.import_btn.setText(t("import_config"))
         self.presets_btn.setText(t("presets"))
+        self.presets_btn.setText(t("presets"))
         self.disable_all_btn.setText(t("disable_all"))
+        
+        # Update safety warnings
+        self.safety_label.setText(t("safety_warning"))
+        self.backup_label.setText(t("backup_reminder"))
         
         # Update service cards
         for card in self.service_cards.values():
