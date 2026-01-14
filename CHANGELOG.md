@@ -2,6 +2,28 @@
 
 All notable changes to this project are documented here.
 
+## [v1.3.0] - 2026-01-14
+
+### ✨ New Features
+
+- 🔍 **Change Monitor**: Detects when Windows Updates re-enable AI services and notifies the user
+- 🔔 **Alert Banner**: Visual notification in the app when settings have been modified
+- ↩️ **One-Click Restore**: Quickly restore your previous settings with a single button
+- ✅ **Accept Changes**: Option to accept new state as baseline if desired
+- 🤖 **Auto-Restore Mode**: New `--auto-restore` flag for completely automatic restoration:
+  ```bash
+  WinAIRemovalTool.exe --silent --auto-restore
+  ```
+- 📸 **State Snapshots**: Automatically saves your preferences to detect future changes
+
+### 🔧 Improvements
+
+- Silent mode now intelligently compares current state vs saved preferences
+- System tray notifications when changes are detected
+- Better logging of change detection and restoration events
+
+---
+
 ## [v1.2.0] - 2026-01-14
 
 ### ✨ New Features

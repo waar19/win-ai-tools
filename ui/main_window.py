@@ -6,7 +6,7 @@ from PyQt6.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QLabel, QPushButton, QScrollArea, QFrame,
     QMessageBox, QProgressBar, QApplication, QSplitter,
-    QFileDialog, QMenu
+    QFileDialog, QMenu, QSystemTrayIcon
 )
 from PyQt6.QtCore import Qt, QThread, pyqtSignal
 from PyQt6.QtGui import QIcon, QAction
@@ -21,7 +21,8 @@ from .log_viewer import LogViewerWidget
 from .language_selector import LanguageSelector
 from .update_banner import UpdateBanner
 from .scheduler_toggle import SchedulerToggle
-from .system_tray import SystemTrayIcon # Added import
+from .system_tray import SystemTrayIcon
+from .change_alert_banner import ChangeAlertBanner
 from core.detector import AIServiceDetector
 from core.manager import AIServiceManager
 from core.ai_services import AIService, ServiceStatus
@@ -29,6 +30,7 @@ from core.logger import activity_logger
 from core.i18n import I18n, t
 from core.persistence import ConfigPersistence
 from core.updater import UpdateChecker, UpdateInfo
+from core.change_monitor import ChangeMonitor
 
 
 class DetectionWorker(QThread):
@@ -69,6 +71,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.detector = AIServiceDetector()
         self.manager = AIServiceManager()
+        self.change_monitor = ChangeMonitor()
         self.service_cards = {}
         self.current_worker = None
         
@@ -110,6 +113,12 @@ class MainWindow(QMainWindow):
         # Update banner placeholder (hidden by default)
         self.update_banner_container = QVBoxLayout()
         main_layout.addLayout(self.update_banner_container)
+        
+        # Change alert banner (hidden by default)
+        self.change_alert_banner = ChangeAlertBanner()
+        self.change_alert_banner.restore_clicked.connect(self._on_restore_changes)
+        self.change_alert_banner.accept_clicked.connect(self._on_accept_changes)
+        main_layout.addWidget(self.change_alert_banner)
         
         # Header with language selector
         header_layout = QVBoxLayout()
@@ -323,6 +332,9 @@ class MainWindow(QMainWindow):
         
         # Update log viewer
         self.log_viewer.refresh()
+        
+        # Check for changes after detection
+        self._check_service_changes()
     
     def _on_disable_service(self, service_id: str):
         """Handle disable service click"""
@@ -721,3 +733,77 @@ class MainWindow(QMainWindow):
         # Refresh
         self._start_detection()
         self.log_viewer.refresh()
+    
+    # =============================================
+    # Change Monitor Methods
+    # =============================================
+    
+    def _check_service_changes(self):
+        """Check if any services have changed since last snapshot"""
+        if not self.change_monitor.has_baseline():
+            # No baseline yet, save current state as baseline
+            self.change_monitor.save_current_state()
+            return
+        
+        report = self.change_monitor.check_for_changes()
+        
+        if report.has_reenabled_services:
+            # Show alert banner
+            self.change_alert_banner.show_alert(report)
+            
+            # Also show tray notification
+            if hasattr(self, 'tray_icon') and self.tray_icon:
+                self.tray_icon.showMessage(
+                    t("changes_detected"),
+                    t("tray_changes_detected"),
+                    QSystemTrayIcon.MessageIcon.Warning,
+                    5000
+                )
+        else:
+            self.change_alert_banner.hide()
+    
+    def _on_restore_changes(self):
+        """Handle restore button click from alert banner"""
+        self.progress_bar.setVisible(True)
+        self.status_label.setText(t("restore_settings"))
+        QApplication.processEvents()
+        
+        success_count, fail_count, messages = self.change_monitor.auto_restore()
+        
+        self.progress_bar.setVisible(False)
+        
+        if success_count > 0:
+            self.status_label.setText(t("auto_restore_complete", success=success_count, failed=fail_count))
+            QMessageBox.information(
+                self,
+                t("restored"),
+                t("settings_restored")
+            )
+            
+            # Save new state and refresh
+            self.change_monitor.save_current_state()
+            self._start_detection()
+        else:
+            self.status_label.setText(t("error", message="Restore failed"))
+            
+        self.change_alert_banner.hide()
+        self.log_viewer.refresh()
+    
+    def _on_accept_changes(self):
+        """Handle accept button click from alert banner - save current state as new baseline"""
+        success, message = self.change_monitor.accept_current_state()
+        
+        if success:
+            self.status_label.setText(t("settings_accepted"))
+            self.tray_icon.showMessage(
+                t("app_title"),
+                t("snapshot_saved"),
+                QSystemTrayIcon.MessageIcon.Information,
+                2000
+            )
+        
+        self.change_alert_banner.hide()
+    
+    def _save_snapshot_after_action(self):
+        """Save snapshot after user makes changes to remember their preferences"""
+        self.change_monitor.save_current_state()

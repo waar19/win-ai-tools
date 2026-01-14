@@ -118,6 +118,19 @@ TRANSLATIONS = {
         "registry_error": "Registry error: {error}",
         "restart_recommended": "Some changes may require a system restart to take full effect.",
         "scheduler_needs_admin": "This feature requires administrator permissions. Please run the application as Admin.",
+        
+        # Change Monitor
+        "changes_detected": "⚠️ Settings Changed",
+        "services_reenabled": "{count} service(s) were re-enabled (possibly by Windows Update)",
+        "no_changes_detected": "No changes detected since last snapshot.",
+        "restore_settings": "Restore Settings",
+        "accept_changes": "Accept Changes",
+        "dismiss": "Dismiss",
+        "settings_restored": "Settings restored successfully!",
+        "settings_accepted": "Current settings saved as new baseline.",
+        "auto_restore_complete": "Auto-restore complete: {success} restored, {failed} failed.",
+        "snapshot_saved": "Current state saved as baseline.",
+        "tray_changes_detected": "AI services changed! Click to review.",
     },
     
     "de": {
@@ -221,6 +234,19 @@ TRANSLATIONS = {
         "registry_error": "Registry-Fehler: {error}",
         "restart_recommended": "Einige Änderungen erfordern möglicherweise einen Systemneustart, um vollständig wirksam zu werden.",
         "scheduler_needs_admin": "Diese Funktion erfordert Administratorrechte. Bitte als Admin ausführen.",
+        
+        # Change Monitor
+        "changes_detected": "⚠️ Einstellungen geändert",
+        "services_reenabled": "{count} Dienst(e) wurden reaktiviert (möglicherweise durch Windows Update)",
+        "no_changes_detected": "Keine Änderungen seit dem letzten Snapshot erkannt.",
+        "restore_settings": "Einstellungen wiederherstellen",
+        "accept_changes": "Änderungen akzeptieren",
+        "dismiss": "Schließen",
+        "settings_restored": "Einstellungen erfolgreich wiederhergestellt!",
+        "settings_accepted": "Aktuelle Einstellungen als neue Baseline gespeichert.",
+        "auto_restore_complete": "Automatische Wiederherstellung abgeschlossen: {success} wiederhergestellt, {failed} fehlgeschlagen.",
+        "snapshot_saved": "Aktueller Zustand als Baseline gespeichert.",
+        "tray_changes_detected": "AI-Dienste geändert! Klicken zum Überprüfen.",
     },
     
     "es": {
@@ -324,6 +350,19 @@ TRANSLATIONS = {
         "registry_error": "Error en registry: {error}",
         "restart_recommended": "Algunos cambios pueden requerir reiniciar el sistema para tomar efecto completo.",
         "scheduler_needs_admin": "Esta función requiere permisos de administrador. Por favor, ejecute la aplicación como Admin.",
+        
+        # Change Monitor
+        "changes_detected": "⚠️ Configuración Modificada",
+        "services_reenabled": "{count} servicio(s) fueron reactivados (posiblemente por Windows Update)",
+        "no_changes_detected": "No se detectaron cambios desde el último snapshot.",
+        "restore_settings": "Restaurar Configuración",
+        "accept_changes": "Aceptar Cambios",
+        "dismiss": "Descartar",
+        "settings_restored": "¡Configuración restaurada exitosamente!",
+        "settings_accepted": "Configuración actual guardada como nueva línea base.",
+        "auto_restore_complete": "Auto-restauración completa: {success} restaurados, {failed} fallidos.",
+        "snapshot_saved": "Estado actual guardado como línea base.",
+        "tray_changes_detected": "¡Servicios AI modificados! Clic para revisar.",
     }
 }
 

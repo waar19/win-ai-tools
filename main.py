@@ -18,35 +18,78 @@ def is_admin():
         return False
 
 
-def run_silent_mode():
+def run_silent_mode(auto_restore=False):
     """
-    Run in silent mode - apply settings without UI.
+    Run in silent mode - check for changes and optionally auto-restore.
     Used by scheduled task to maintain settings after Windows Updates.
+    
+    Args:
+        auto_restore: If True, automatically restore settings without user interaction
     """
-    from core.detector import AIServiceDetector
-    from core.manager import AIServiceManager
+    from core.change_monitor import ChangeMonitor
     from core.logger import activity_logger
-    from core.ai_services import ServiceStatus
     
-    detector = AIServiceDetector()
-    manager = AIServiceManager()
+    monitor = ChangeMonitor()
     
-    # Detect all services
-    services = detector.detect_all()
-    
-    # Re-apply disabled settings for services that should be disabled
-    # (based on registry backup or previous state)
+    # Log start
     activity_logger.log(
-        activity_logger.LogLevel.INFO if hasattr(activity_logger, 'LogLevel') else None,
-        "MAINTENANCE",
-        "system",
-        "System",
-        "Silent maintenance started"
+        level="INFO",
+        action="MAINTENANCE",
+        service_id="system",
+        service_name="System",
+        details="Silent maintenance started"
     )
     
-    # For now, just log the current state
-    enabled_count = sum(1 for s in services if s.status == ServiceStatus.ENABLED)
-    print(f"Silent mode: Found {len(services)} services, {enabled_count} enabled")
+    # Check if we have a baseline
+    if not monitor.has_baseline():
+        # First run - save current state as baseline
+        monitor.save_current_state()
+        print("Silent mode: First run - baseline snapshot saved")
+        return 0
+    
+    # Check for changes
+    report = monitor.check_for_changes()
+    
+    if report.is_empty:
+        print("Silent mode: No changes detected")
+        return 0
+    
+    # Found changes
+    print(f"Silent mode: Detected {report.total_changes} changes")
+    print(monitor.get_change_summary(report))
+    
+    if report.has_reenabled_services:
+        activity_logger.log(
+            level="WARNING",
+            action="CHANGES_DETECTED",
+            service_id="system",
+            service_name="System",
+            details=f"{report.reenabled_count} service(s) re-enabled by Windows Update"
+        )
+        
+        if auto_restore:
+            # Automatically restore settings
+            success, fail, messages = monitor.auto_restore()
+            
+            print(f"Auto-restore: {success} restored, {fail} failed")
+            for msg in messages:
+                print(f"  {msg}")
+            
+            if success > 0:
+                monitor.save_current_state()
+                activity_logger.log(
+                    level="INFO",
+                    action="AUTO_RESTORE",
+                    service_id="system",
+                    service_name="System",
+                    details=f"Auto-restored {success} services"
+                )
+            
+            return 0 if fail == 0 else 1
+        else:
+            # Just notify - user will see alert when they open the app
+            print("Silent mode: User will be notified on next app launch")
+            return 0
     
     return 0
 
@@ -93,11 +136,17 @@ def main():
         action='store_true',
         help='Start application minimized to system tray'
     )
+    parser.add_argument(
+        '--auto-restore',
+        action='store_true',
+        dest='auto_restore',
+        help='Automatically restore settings if changes detected (use with --silent)'
+    )
     
     args = parser.parse_args()
     
     if args.silent:
-        sys.exit(run_silent_mode())
+        sys.exit(run_silent_mode(auto_restore=args.auto_restore))
     else:
         sys.exit(run_gui_mode(start_minimized=args.minimized))
 
