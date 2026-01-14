@@ -5,10 +5,11 @@ Main application window
 from PyQt6.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QLabel, QPushButton, QScrollArea, QFrame,
-    QMessageBox, QProgressBar, QApplication, QSplitter
+    QMessageBox, QProgressBar, QApplication, QSplitter,
+    QFileDialog, QMenu
 )
 from PyQt6.QtCore import Qt, QThread, pyqtSignal
-from PyQt6.QtGui import QIcon
+from PyQt6.QtGui import QIcon, QAction
 
 import sys
 import os
@@ -25,6 +26,7 @@ from core.manager import AIServiceManager
 from core.ai_services import AIService, ServiceStatus
 from core.logger import activity_logger
 from core.i18n import I18n, t
+from core.persistence import ConfigPersistence
 from core.updater import UpdateChecker, UpdateInfo
 
 
@@ -205,6 +207,21 @@ class MainWindow(QMainWindow):
         
         footer_layout.addStretch()
         
+        # Export/Import buttons
+        self.export_btn = QPushButton(t("export_config"))
+        self.export_btn.clicked.connect(self._export_config)
+        footer_layout.addWidget(self.export_btn)
+        
+        self.import_btn = QPushButton(t("import_config"))
+        self.import_btn.clicked.connect(self._import_config)
+        footer_layout.addWidget(self.import_btn)
+        
+        self.presets_btn = QPushButton(t("presets"))
+        self.presets_btn.clicked.connect(self._show_presets_menu)
+        footer_layout.addWidget(self.presets_btn)
+        
+        footer_layout.addStretch()
+        
         self.disable_all_btn = QPushButton(t("disable_all"))
         self.disable_all_btn.setObjectName("danger")
         self.disable_all_btn.clicked.connect(self._disable_all)
@@ -225,6 +242,10 @@ class MainWindow(QMainWindow):
         self.refresh_btn.setText(t("refresh"))
         self.backup_btn.setText(t("create_backup"))
         self.restore_btn.setText(t("restore"))
+        self.restore_btn.setText(t("restore"))
+        self.export_btn.setText(t("export_config"))
+        self.import_btn.setText(t("import_config"))
+        self.presets_btn.setText(t("presets"))
         self.disable_all_btn.setText(t("disable_all"))
         
         # Update service cards
@@ -475,3 +496,166 @@ class MainWindow(QMainWindow):
                 self
             )
             self.update_banner_container.addWidget(banner)
+    
+    def _export_config(self):
+        """Export current configuration to JSON"""
+        try:
+            file_path, _ = QFileDialog.getSaveFileName(
+                self,
+                t("export_config"),
+                "win-ai-tools-config.json",
+                "JSON Files (*.json)"
+            )
+            
+            if not file_path:
+                return
+            
+            success, message = ConfigPersistence.export_config(self.detector.services, file_path)
+            
+            if success:
+                QMessageBox.information(self, t("success", message=""), t("config_exported"))
+                activity_logger.log_backup(True, f"Config exported to {file_path}")
+            else:
+                QMessageBox.warning(self, t("error_title"), message)
+                
+        except Exception as e:
+            QMessageBox.critical(self, t("error_title"), str(e))
+
+    def _import_config(self):
+        """Import configuration from JSON"""
+        try:
+            file_path, _ = QFileDialog.getOpenFileName(
+                self,
+                t("import_config"),
+                "",
+                "JSON Files (*.json)"
+            )
+            
+            if not file_path:
+                return
+            
+            success, config, message = ConfigPersistence.import_config(file_path)
+            
+            if not success:
+                QMessageBox.warning(self, t("error_title"), t("import_error", error=message))
+                return
+            
+            # Apply configuration
+            self.progress_bar.setVisible(True)
+            self.status_label.setText(t("config_imported"))
+            QApplication.processEvents()
+            
+            applied_count = 0
+            
+            # Disable services marked as disabled in config
+            for service_id, status in config.items():
+                if status == "disabled":
+                    service = next((s for s in self.detector.services if s.id == service_id), None)
+                    if service and service.status != ServiceStatus.DISABLED:
+                        # Disable it
+                        success_disable, msg = self.manager.disable_service(service)
+                        if success_disable:
+                            applied_count += 1
+                        activity_logger.log_disable(service.id, service.name, success_disable, "Imported config")
+            
+            self.progress_bar.setVisible(False)
+            self.status_label.setText(t("success", message=f"Config imported: {applied_count} changes applied"))
+            QMessageBox.information(self, t("info"), t("config_imported"))
+            
+            # Refresh
+            self._start_detection()
+            self.log_viewer.refresh()
+            
+        except Exception as e:
+            QMessageBox.critical(self, t("error_title"), str(e))
+    
+    def _show_presets_menu(self):
+        """Show menu with configuration presets"""
+        menu = QMenu(self)
+        menu.setStyleSheet("""
+            QMenu {
+                background-color: #16213e;
+                color: #eaeaea;
+                border: 1px solid #0f3460;
+            }
+            QMenu::item {
+                padding: 8px 20px;
+            }
+            QMenu::item:selected {
+                background-color: #0f3460;
+            }
+        """)
+        
+        presets = ConfigPersistence.get_presets()
+        
+        for key, data in presets.items():
+            # Translate preset name if possible
+            tr_key = f"preset_{key}"
+            name = t(tr_key)
+            if name == tr_key:
+                name = data["name"]
+                
+            action = QAction(name, self)
+            action.setToolTip(data["description"])
+            
+            # Use default argument capture directly in lambda
+            # We must bind key=key to capture the current value
+            action.triggered.connect(lambda checked, k=key: self._apply_preset(k))
+            
+            menu.addAction(action)
+            
+        menu.exec(self.presets_btn.mapToGlobal(self.presets_btn.rect().topLeft()))
+        
+    def _apply_preset(self, preset_key: str):
+        """Apply selected preset"""
+        presets = ConfigPersistence.get_presets()
+        if preset_key not in presets:
+            return
+            
+        data = presets[preset_key]
+        config = data["config"]
+        
+        self.progress_bar.setVisible(True)
+        self.status_label.setText(t("enabling")) # Generic message
+        QApplication.processEvents()
+        
+        applied_count = 0
+        
+        # Handle special keywords
+        if config == "DISABLE_ALL":
+            self._disable_all()
+            return
+        elif config == "ENABLE_ALL":
+            # Enable all services
+            for service in self.detector.services:
+                if service.status != ServiceStatus.ENABLED:
+                    self._run_action("enable", service)
+                    # We can't easily wait for all async actions here without refactoring
+                    # So we just trigger them and let the queue/UI handle it
+            return
+            
+        # Handle dict config
+        elif isinstance(config, dict):
+             for service_id, status in config.items():
+                service = next((s for s in self.detector.services if s.id == service_id), None)
+                if not service:
+                    continue
+                    
+                if status == "disabled" and service.status != ServiceStatus.DISABLED:
+                     self._run_action("disable", service)
+                     applied_count += 1
+                elif status == "enabled" and service.status != ServiceStatus.ENABLED:
+                     self._run_action("enable", service)
+                     applied_count += 1
+
+        # Show success toast/message (simplified)
+        tr_key = f"preset_{preset_key}"
+        name = t(tr_key)
+        if name == tr_key:
+            name = data["name"]
+            
+        self.status_label.setText(t("preset_applied", name=name))
+        
+        # Refresh
+        self._start_detection()
+        self.log_viewer.refresh()

@@ -38,6 +38,15 @@ TRANSLATIONS = {
         "disable_all": "🚫 Disable All",
         "enable": "Enable",
         "disable": "Disable",
+        "export_config": "📤 Export Config",
+        "import_config": "📥 Import Config",
+        "presets": "⚡ Presets",
+        
+        # Presets
+        "preset_privacy_max": "Maximum Privacy (Disable All)",
+        "preset_balanced": "Balanced (Keep Search)",
+        "preset_reset": "Reset to Defaults (Enable All)",
+        "preset_applied": "Preset '{name}' applied successfully!",
         
         # Headers
         "detected_services": "🛡️ Detected AI Services",
@@ -59,6 +68,9 @@ TRANSLATIONS = {
         "no_active_services": "No active services to disable.",
         "warning": "⚠️ Confirm",
         "error_title": "Error",
+        "config_exported": "Configuration exported successfully!",
+        "config_imported": "Configuration imported successfully.\nApplying settings now...",
+        "import_error": "Error importing configuration: {error}",
         
         # Service status
         "status_enabled": "● Active",
@@ -109,6 +121,15 @@ TRANSLATIONS = {
         "disable_all": "🚫 Alle deaktivieren",
         "enable": "Aktivieren",
         "disable": "Deaktivieren",
+        "export_config": "📤 Config Exportieren",
+        "import_config": "📥 Config Importieren",
+        "presets": "⚡ Vorlagen",
+        
+        # Presets
+        "preset_privacy_max": "Maximale Privatsphäre (Alle aus)",
+        "preset_balanced": "Ausgewogen (Suche behalten)",
+        "preset_reset": "Zurücksetzen (Alle an)",
+        "preset_applied": "Vorlage '{name}' erfolgreich angewendet!",
         
         # Headers
         "detected_services": "🛡️ Erkannte KI-Dienste",
@@ -130,6 +151,9 @@ TRANSLATIONS = {
         "no_active_services": "Keine aktiven Dienste zum Deaktivieren.",
         "warning": "⚠️ Bestätigen",
         "error_title": "Fehler",
+        "config_exported": "Konfiguration erfolgreich exportiert!",
+        "config_imported": "Konfiguration erfolgreich importiert.\nEinstellungen werden angewendet...",
+        "import_error": "Fehler beim Importieren der Konfiguration: {error}",
         
         # Service status
         "status_enabled": "● Aktiv",
@@ -180,6 +204,15 @@ TRANSLATIONS = {
         "disable_all": "🚫 Deshabilitar Todo",
         "enable": "Habilitar",
         "disable": "Deshabilitar",
+        "export_config": "📤 Exportar Config",
+        "import_config": "📥 Importar Config",
+        "presets": "⚡ Preajustes",
+        
+        # Presets
+        "preset_privacy_max": "Privacidad Máxima (Desactivar Todo)",
+        "preset_balanced": "Balanceado (Mantener Búsqueda)",
+        "preset_reset": "Restaurar Defaults (Activar Todo)",
+        "preset_applied": "¡Preajuste '{name}' aplicado exitosamente!",
         
         # Headers
         "detected_services": "🛡️ Servicios AI Detectados",
@@ -201,6 +234,9 @@ TRANSLATIONS = {
         "no_active_services": "No hay servicios activos para deshabilitar.",
         "warning": "⚠️ Confirmar",
         "error_title": "Error",
+        "config_exported": "¡Configuración exportada exitosamente!",
+        "config_imported": "Configuración importada exitosamente.\nAplicando ajustes ahora...",
+        "import_error": "Error al importar configuración: {error}",
         
         # Service status
         "status_enabled": "● Activo",
