@@ -6,7 +6,7 @@
 
   ;Name and file
   Name "Windows AI Removal Tool"
-  OutFile "WinAIRemovalTool_v1.2.0_win_x64_Setup.exe"
+  OutFile "WinAIRemovalTool_v1.3.0_win_x64_Setup.exe"
   Unicode True
 
   ;Default installation folder
@@ -73,7 +73,7 @@ Section "Windows AI Removal Tool (Required)" SecCore
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\WindowsAIRemovalTool" "UninstallString" '"$INSTDIR\uninstall.exe"'
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\WindowsAIRemovalTool" "DisplayIcon" '"$INSTDIR\app.ico"'
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\WindowsAIRemovalTool" "Publisher" "WinAI Community"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\WindowsAIRemovalTool" "DisplayVersion" "1.2.0"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\WindowsAIRemovalTool" "DisplayVersion" "1.3.0"
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\WindowsAIRemovalTool" "NoModify" 1
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\WindowsAIRemovalTool" "NoRepair" 1
   

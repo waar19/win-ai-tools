@@ -30,8 +30,8 @@ echo   dist\WinAIRemovalTool.exe
 echo.
 
 echo Creando version portable (ZIP)...
-powershell -Command "Compress-Archive -Path 'dist\WinAIRemovalTool.exe', 'README.md', 'LICENSE' -DestinationPath 'WinAIRemovalTool_v1.2.0_win_x64_Portable.zip' -Force"
-echo PORTABLE CREADO: WinAIRemovalTool_v1.2.0_win_x64_Portable.zip
+powershell -Command "Compress-Archive -Path 'dist\WinAIRemovalTool.exe', 'README.md', 'LICENSE' -DestinationPath 'WinAIRemovalTool_v1.3.0_win_x64_Portable.zip' -Force"
+echo PORTABLE CREADO: WinAIRemovalTool_v1.3.0_win_x64_Portable.zip
 echo.
 
 REM Chequear si makensis (NSIS) esta disponible
@@ -41,7 +41,7 @@ if %ERRORLEVEL% EQU 0 (
     echo Compilando instalador NSIS...
     makensis installer.nsi
     if !ERRORLEVEL! EQU 0 (
-        echo INSTALADOR CREADO EXITOSAMENTE: WinAIRemovalTool_v1.2.0_win_x64_Setup.exe
+        echo INSTALADOR CREADO EXITOSAMENTE: WinAIRemovalTool_v1.3.0_win_x64_Setup.exe
     ) else (
         echo Error al compilar el instalador.
     )
