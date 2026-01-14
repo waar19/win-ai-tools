@@ -10,6 +10,7 @@ import json
 from datetime import datetime
 from typing import Tuple, Optional
 from .ai_services import AIService, ServiceStatus
+from .i18n import t
 
 
 class AIServiceManager:
@@ -56,9 +57,9 @@ class AIServiceManager:
                 errors.append(error)
         
         if success_count > 0:
-            return True, f"Servicio deshabilitado ({success_count} cambios aplicados)"
+            return True, t("service_disabled", count=success_count)
         else:
-            return False, "; ".join(errors) if errors else "No se realizaron cambios"
+            return False, "; ".join(errors) if errors else t("no_changes")
     
     def enable_service(self, service: AIService) -> Tuple[bool, str]:
         """Habilita un servicio AI (restaura valores por defecto)"""
@@ -88,9 +89,9 @@ class AIServiceManager:
                 errors.append(error)
         
         if success_count > 0:
-            return True, f"Servicio habilitado ({success_count} cambios aplicados)"
+            return True, t("service_enabled", count=success_count)
         else:
-            return False, "; ".join(errors) if errors else "No se realizaron cambios"
+            return False, "; ".join(errors) if errors else t("no_changes")
     
     def _set_registry_value(self, hive, path: str, key: str, value: int) -> Tuple[bool, str]:
         """Establece un valor en el registro de Windows"""
@@ -106,9 +107,9 @@ class AIServiceManager:
             winreg.CloseKey(reg_key)
             return True, ""
         except PermissionError:
-            return False, f"Sin permisos para modificar: {path}\\{key}"
+            return False, t("permission_error", path=f"{path}\\{key}")
         except Exception as e:
-            return False, f"Error en registry: {str(e)}"
+            return False, t("registry_error", error=str(e))
     
     def _remove_appx_package(self, package_name: str) -> Tuple[bool, str]:
         """Remueve un paquete Appx"""

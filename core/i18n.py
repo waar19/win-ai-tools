@@ -107,7 +107,15 @@ TRANSLATIONS = {
         "auto_maintenance": "Auto-Maintenance",
         "auto_maintenance_desc": "Re-apply settings after Windows Updates (runs at startup & daily)",
         "scheduler_active": "● Active",
+        "scheduler_active": "● Active",
         "scheduler_inactive": "○ Inactive",
+        
+        # Manager
+        "service_disabled": "Service disabled ({count} changes applied)",
+        "service_enabled": "Service enabled ({count} changes applied)",
+        "no_changes": "No changes performed",
+        "permission_error": "No permission to modify: {path}",
+        "registry_error": "Registry error: {error}",
     },
     
     "de": {
@@ -200,7 +208,15 @@ TRANSLATIONS = {
         "auto_maintenance": "Auto-Wartung",
         "auto_maintenance_desc": "Einstellungen nach Windows-Updates erneut anwenden (läuft beim Start & täglich)",
         "scheduler_active": "● Aktiv",
+        "scheduler_active": "● Aktiv",
         "scheduler_inactive": "○ Inaktiv",
+        
+        # Manager
+        "service_disabled": "Dienst deaktiviert ({count} Änderungen angewendet)",
+        "service_enabled": "Dienst aktiviert ({count} Änderungen angewendet)",
+        "no_changes": "Keine Änderungen vorgenommen",
+        "permission_error": "Keine Berechtigung zum Ändern: {path}",
+        "registry_error": "Registry-Fehler: {error}",
     },
     
     "es": {
@@ -293,7 +309,15 @@ TRANSLATIONS = {
         "auto_maintenance": "Auto-Mantenimiento",
         "auto_maintenance_desc": "Re-aplicar configuración después de Windows Updates (ejecuta al inicio y diariamente)",
         "scheduler_active": "● Activo",
+        "scheduler_active": "● Activo",
         "scheduler_inactive": "○ Inactivo",
+        
+        # Manager
+        "service_disabled": "Servicio deshabilitado ({count} cambios aplicados)",
+        "service_enabled": "Servicio habilitado ({count} cambios aplicados)",
+        "no_changes": "No se realizaron cambios",
+        "permission_error": "Sin permisos para modificar: {path}",
+        "registry_error": "Error en registry: {error}",
     }
 }
 

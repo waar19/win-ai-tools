@@ -1,4 +1,5 @@
 @echo off
+setlocal EnableDelayedExpansion
 echo ========================================
 echo  Windows AI Removal Tool - Build Script
 echo ========================================
@@ -33,11 +34,11 @@ if exist "dist\WinAIRemovalTool.exe" (
     
     REM Chequear si makensis (NSIS) esta disponible
     where makensis >nul 2>nul
-    if %ERRORLEVEL% EQU 0 (
+    if !ERRORLEVEL! EQU 0 (
         echo.
         echo Compilando instalador NSIS...
         makensis installer.nsi
-        if %ERRORLEVEL% EQU 0 (
+        if !ERRORLEVEL! EQU 0 (
             echo INSTALADOR CREADO EXITOSAMENTE: WinAIRemovalTool_v1.2.0_win_x64_Setup.exe
         ) else (
             echo Error al compilar el instalador.
